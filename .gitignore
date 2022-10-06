@@ -163,5 +163,3 @@ broadcast
 cache
 
 .env*
-
-UniswapV2TwapOracle[0-9].sol
