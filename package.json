@@ -8,7 +8,8 @@
     "scripts": {
         "lint": "prettier -l src/**/*.sol tests/**/*.sol",
         "build": "forge build",
-        "test": "forge test"
+        "test": "forge test",
+        "prepare": "node ./init.js"
     },
     "devDependencies": {
         "prettier": "^2.7.1",
