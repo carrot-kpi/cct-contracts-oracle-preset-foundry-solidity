@@ -1,4 +1,5 @@
 {
+    "type": "module",
     "name": "cct-contracts-oracle-preset-foundry-solidity",
     "version": "0.1.0",
     "description": "A preset for developing Carrot oracle templates' smart contracts with Foundry and Solidity.",
