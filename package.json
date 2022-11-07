@@ -10,8 +10,7 @@
         "lint": "prettier -l src/**/*.sol tests/**/*.sol",
         "build": "forge build",
         "test": "forge test",
-        "coverage": "forge coverage",
-        "prepare": "node ./init.js"
+        "coverage": "forge coverage"
     },
     "devDependencies": {
         "eslint": "^8.23.1",
