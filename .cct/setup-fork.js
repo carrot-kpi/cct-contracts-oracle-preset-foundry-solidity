@@ -16,7 +16,7 @@ export const setupFork = async (
     const {
         abi: templateAbi,
         bytecode: templateBytecode,
-    } = require("../artifacts/ERC20KPIToken.sol/ERC20KPIToken.json");
+    } = require("../artifacts/OracleTemplate.sol/OracleTemplate.json");
     const templateFactory = new ContractFactory(
         templateAbi,
         templateBytecode,
