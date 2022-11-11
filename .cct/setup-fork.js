@@ -6,12 +6,38 @@ const require = createRequire(fileURLToPath(import.meta.url));
 
 export const setupFork = async (
     _factory,
-    _kpiTokensManager,
+    kpiTokensManager,
     _oraclesManager,
     _multicall,
     _predictedTemplateId,
-    signer
+    signer,
+    ganacheProvider
 ) => {
+    // deploy mock kpi token
+    const {
+        abi: mockKPITokenTemplateABI,
+        bytecode: mockKPITokenTemplateBytecode,
+    } = require("../artifacts/MockKPITokenTemplate.sol/MockKPITokenTemplate.json");
+    const mockKPITokenTemplateFactory = new ContractFactory(
+        mockKPITokenTemplateABI,
+        mockKPITokenTemplateBytecode,
+        signer
+    );
+    const mockKPITokenTemplateContract =
+        await mockKPITokenTemplateFactory.deploy();
+    await mockKPITokenTemplateContract.deployed();
+
+    // add mock kpi token
+    const kpiTokensManagerOwner = await kpiTokensManager.owner();
+    const predictedTemplateId = (await kpiTokensManager.templatesAmount())
+        .add("1")
+        .toNumber();
+    await kpiTokensManager
+        .connect(ganacheProvider.getSigner(kpiTokensManagerOwner))
+        .addTemplate(mockKPITokenTemplateContract.address, "fake-cid", {
+            from: kpiTokensManagerOwner,
+        });
+
     // deploy template
     const {
         abi: templateAbi,
@@ -30,7 +56,16 @@ export const setupFork = async (
 
     return {
         templateContract,
-        customContracts: [],
-        frontendGlobals: {},
+        customContracts: [
+            {
+                name: "Mock KPI token",
+                address: mockKPITokenTemplateContract.address,
+            },
+        ],
+        frontendGlobals: {
+            MOCK_KPI_TOKEN_TEMPLATE_ID: predictedTemplateId.toString(),
+            MOCK_KPI_TOKEN_TEMPLATE_ADDRESS:
+                mockKPITokenTemplateContract.address,
+        },
     };
 };
